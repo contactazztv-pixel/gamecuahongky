@@ -1,0 +1,33 @@
+{
+  "name": "Tiệm Nhỏ Trước Cổng Trường",
+  "short_name": "Tiệm Nhỏ",
+  "description": "Web game 2D mô phỏng kinh doanh ẩm thực học đường Việt Nam dễ thương, thư giãn.",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FDF6EC",
+  "theme_color": "#F59E0B",
+  "lang": "vi",
+  "categories": ["games", "simulation"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/foods/dish_boba_tea.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/coin_gold.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pangolin&family=Patrick+Hand&display=swap');
+@import './styles/tokens.css';
+@import './styles/animations.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FDF6EC;
+  color: #382D24;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow-x: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+/* Custom Cozy Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F5E8D3;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4A373;
+  border-radius: 9999px;
+  border: 2px solid #F5E8D3;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #BC8A5F;
+}
+
+/* Game button tactile feel */
+.btn-game-primary {
+  @apply relative font-extrabold text-white bg-gradient-to-b from-amber-500 to-amber-600 
+         border-b-4 border-amber-800 rounded-2xl px-5 py-2.5 
+         shadow-game transition-all active:translate-y-1 active:border-b-0 active:shadow-game-press;
+}
+
+.btn-game-secondary {
+  @apply relative font-bold text-amber-950 bg-amber-100 
+         border-b-4 border-amber-300 rounded-2xl px-4 py-2 
+         shadow-game transition-all active:translate-y-1 active:border-b-0 active:shadow-game-press hover:bg-amber-200;
+}
+
+.btn-game-success {
+  @apply relative font-extrabold text-white bg-gradient-to-b from-emerald-500 to-emerald-600 
+         border-b-4 border-emerald-800 rounded-2xl px-5 py-2.5 
+         shadow-game transition-all active:translate-y-1 active:border-b-0 active:shadow-game-press;
+}
+
+.btn-game-danger {
+  @apply relative font-extrabold text-white bg-gradient-to-b from-rose-500 to-rose-600 
+         border-b-4 border-rose-800 rounded-2xl px-4 py-2 
+         shadow-game transition-all active:translate-y-1 active:border-b-0 active:shadow-game-press;
+}
+
+/* Panel & Card styling */
+.game-panel {
+  @apply bg-amber-50/95 border-2 border-amber-900/20 rounded-3xl shadow-xl backdrop-blur-sm;
+}
+
+.game-card {
+  @apply bg-white/90 border border-amber-200/80 rounded-2xl shadow-sm transition-all;
+}
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

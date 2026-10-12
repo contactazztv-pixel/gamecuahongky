@@ -1,0 +1,138 @@
+/**
+ * COZY GAME ANIMATIONS - TIỆM NHỎ TRƯỚC CỔNG TRƯỜNG
+ * Hệ thống hiệu ứng hoạt ảnh động 2D nhẹ nhàng, xúc giác và tôn trọng prefers-reduced-motion
+ */
+
+@keyframes steamRise {
+  0% {
+    opacity: 0.8;
+    transform: translateY(0) scale(0.9);
+  }
+  50% {
+    opacity: 0.45;
+    transform: translateY(-8px) scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px) scale(1.3) rotate(-2deg);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes bounceHappy {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-6px) scale(1.05);
+  }
+  60% {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+@keyframes coinPopFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(0.85);
+  }
+  30% {
+    transform: translate(-50%, -15px) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -42px) scale(1.05);
+  }
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  75% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes bellWobble {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(12deg);
+  }
+  40% {
+    transform: rotate(-10deg);
+  }
+  60% {
+    transform: rotate(8deg);
+  }
+  80% {
+    transform: rotate(-4deg);
+  }
+}
+
+@keyframes rainFall {
+  0% {
+    transform: translateY(-20px) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(120px) translateX(-15px);
+    opacity: 0;
+  }
+}
+
+/* Utility Animation Classes */
+.animate-steam-rise {
+  animation: steamRise 2s ease-out infinite;
+}
+
+.animate-float-gentle {
+  animation: floatGentle 3s ease-in-out infinite;
+}
+
+.animate-bounce-happy {
+  animation: bounceHappy 1.2s ease-in-out infinite;
+}
+
+.animate-heart-pulse {
+  animation: heartPulse 1.5s ease-in-out infinite;
+}
+
+.animate-bell-wobble {
+  animation: bellWobble 1s ease-in-out;
+}
+
+.animate-rain-fall {
+  animation: rainFall 0.8s linear infinite;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .animate-steam-rise,
+  .animate-float-gentle,
+  .animate-bounce-happy,
+  .animate-heart-pulse,
+  .animate-bell-wobble,
+  .animate-rain-fall {
+    animation: none !important;
+  }
+}

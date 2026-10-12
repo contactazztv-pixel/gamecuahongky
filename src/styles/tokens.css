@@ -1,0 +1,95 @@
+/**
+ * DESIGN TOKENS - TIỆM NHỎ TRƯỚC CỔNG TRƯỜNG
+ * Hệ thống biến màu sắc, typography, khoảng cách, bóng đổ và bo góc thống nhất
+ */
+
+:root {
+  /* 1. BẢNG MÀU ART DIRECTION */
+  --color-bg-cream: #FFF8EC;
+  --color-warm-white: #FFFEFA;
+  --color-sky-blue: #BFE5FF;
+  --color-fresh-green: #B9E8C5;
+  --color-peach: #FFCDAF;
+  --color-strawberry-pink: #FFBFD1;
+  --color-soft-yellow: #FFE79A;
+
+  /* Typography Colors */
+  --color-text-primary: #354254;
+  --color-text-secondary: #778394;
+  --color-text-muted: #9BA6B5;
+  --color-text-dark: #202833;
+
+  /* Borders & Dividers */
+  --color-border: #E9E1D5;
+  --color-border-dark: #4A3B32;
+  --color-border-soft: #F2ECE1;
+
+  /* Semantic Feedback */
+  --color-success: #58A879;
+  --color-warning: #E7A544;
+  --color-error: #DF6B6B;
+  --color-info: #4A90E2;
+
+  /* 2. TYPOGRAPHY TOKENS */
+  --font-family-game: 'Nunito', 'Quicksand', system-ui, -apple-system, sans-serif;
+  --font-family-hand: 'Patrick Hand', 'Pangolin', 'Caveat', cursive;
+
+  /* 3. BORDER RADII (Bo góc tròn hoạt hình) */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* 4. SHADOWS (Bóng đổ 2D tactile dễ thương) */
+  --shadow-cozy-sm: 0 2px 0 0 rgba(74, 59, 50, 0.12);
+  --shadow-cozy: 0 4px 0 0 rgba(74, 59, 50, 0.18);
+  --shadow-cozy-lg: 0 6px 0 0 rgba(74, 59, 50, 0.22);
+  --shadow-cozy-pressed: 0 1px 0 0 rgba(74, 59, 50, 0.18);
+
+  /* 5. Z-INDEX SYSTEM */
+  --z-background: 0;
+  --z-scene-mid: 10;
+  --z-scene-foreground: 20;
+  --z-hud-top: 30;
+  --z-dock-bottom: 40;
+  --z-modal-backdrop: 50;
+  --z-modal-content: 60;
+  --z-floating-pop: 70;
+  --z-toast: 80;
+}
+
+/* Cozy Card & Container Utilities */
+.cozy-card {
+  background-color: var(--color-warm-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-cozy);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cozy-card:hover {
+  border-color: #D4A373;
+}
+
+/* Nút bấm game tactile 2D */
+.btn-cozy {
+  font-family: var(--font-family-game);
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  border-bottom-width: 4px;
+  transition: all 0.1s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-cozy:active:not(:disabled) {
+  transform: translateY(3px);
+  border-bottom-width: 1px;
+}
+
+.btn-cozy:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
