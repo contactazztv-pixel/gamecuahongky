@@ -93,7 +93,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       {/* 2. Thông tin khách hàng & Lời thoại */}
       <div className="flex items-start gap-2.5">
         <CharacterAvatar
-          characterId={order.customer.templateId || order.customer.id.split('_')[0]}
+          characterId={order.customer.templateId || order.customer.id}
           size="md"
           mood={
             order.status === 'ready_to_serve'

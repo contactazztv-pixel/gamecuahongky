@@ -82,7 +82,7 @@ export const CustomerQueue: React.FC<CustomerQueueProps> = ({
                     <div className="min-w-0">
                       <div className="flex items-center gap-1">
                         <CharacterAvatar
-                          characterId={order.customer.templateId || order.customer.id.split('_')[0]}
+                          characterId={order.customer.templateId || order.customer.id}
                           size="sm"
                           mood="happy"
                           fallbackEmoji={order.customer.avatar}

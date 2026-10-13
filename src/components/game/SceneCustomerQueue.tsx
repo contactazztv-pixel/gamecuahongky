@@ -125,7 +125,7 @@ export const SceneCustomerQueue: React.FC<SceneCustomerQueueProps> = ({
               {/* Avatar chibi biểu cảm */}
               <div className="relative">
                 <CharacterAvatar
-                  characterId={order.customer.templateId || order.customer.id.split('_')[0]}
+                  characterId={order.customer.templateId || order.customer.id}
                   size={isFirst ? 'md' : 'sm'}
                   mood={isReady ? 'happy' : isUrgent ? 'impatient' : 'neutral'}
                   fallbackEmoji={order.customer.avatar}
