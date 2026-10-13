@@ -200,10 +200,10 @@ export const OrderCard: React.FC<OrderCardProps> = React.memo(({
                       {onQuickRestockIngredient && (
                         <button
                           onClick={() => onQuickRestockIngredient(ing.ingredientId, ing.missing)}
-                          className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold px-1.5 py-0.5 rounded text-[10px] flex items-center gap-0.5 shadow-2xs active:scale-95 transition-all"
+                          className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold px-2 py-1 rounded-lg text-[11px] flex items-center gap-1 shadow-2xs active:scale-95 transition-all min-h-[28px] cursor-pointer"
                           title={`Mở chợ nhập thêm ${ing.name}`}
                         >
-                          <PackagePlus className="w-2.5 h-2.5" /> Nhập
+                          <PackagePlus className="w-3 h-3" /> Nhập
                         </button>
                       )}
                     </div>

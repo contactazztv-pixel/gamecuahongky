@@ -209,27 +209,28 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs select-none animate-in fade-in">
-      <div className="w-full max-w-lg bg-white rounded-3xl border-4 border-amber-900/30 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-slate-950/70 backdrop-blur-xs select-none animate-in fade-in">
+      <div className="w-full max-w-lg bg-white rounded-3xl border-3 sm:border-4 border-amber-900/30 shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-16px)] sm:max-h-[90vh]">
         {/* ================= HEADER MODAL ================= */}
-        <div className="bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 p-4 text-white flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+        <div className="bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 px-3.5 sm:px-4 py-3 sm:py-3.5 text-white flex items-center justify-between">
+          <div className="flex items-center gap-2 min-w-0 pr-2">
+            <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
               <ChefHat className="w-5 h-5 text-yellow-200" />
             </div>
-            <div>
-              <h3 className="font-black text-base md:text-lg leading-tight">
+            <div className="min-w-0">
+              <h3 className="font-black text-sm sm:text-base md:text-lg leading-tight truncate">
                 Khu Vực Chế Biến Món Ngon
               </h3>
-              <p className="text-[11px] text-amber-100 font-medium">
+              <p className="text-[10px] sm:text-[11px] text-amber-100 font-medium truncate">
                 Đơn #{order.id.slice(-4)} • Khách: {order.customer.name}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-all active:scale-95"
+            className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-all active:scale-95 flex-shrink-0"
             title="Đóng trạm nấu (không mất nguyên liệu)"
+            aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>
@@ -275,16 +276,16 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
         </div>
 
         {/* ================= KHÔNG GIAN BẾP CHẾ BIẾN TRỰC QUAN 2D ================= */}
-        <div className="p-5 flex-1 flex flex-col justify-between items-center text-center space-y-4 overflow-y-auto">
+        <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between items-center text-center space-y-3 sm:space-y-4 overflow-y-auto">
           {/* Thanh tiến trình bước */}
-          <div className="w-full space-y-1.5">
+          <div className="w-full space-y-1">
             <div className="flex items-center justify-between text-xs font-black text-amber-900">
-              <span>
+              <span className="truncate pr-2">
                 Bước {currentStepIdx + 1} / {totalSteps}: {activeStep.title}
               </span>
-              <span className="text-amber-600">{progressPercent}%</span>
+              <span className="text-amber-600 flex-shrink-0">{progressPercent}%</span>
             </div>
-            <div className="w-full bg-amber-100 h-3 rounded-full overflow-hidden border border-amber-300">
+            <div className="w-full bg-amber-100 h-2.5 sm:h-3 rounded-full overflow-hidden border border-amber-300">
               <div
                 className="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-300"
                 style={{ width: `${progressPercent}%` }}
@@ -294,7 +295,7 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
 
           {/* Sân khấu nấu ăn sinh động */}
           <div
-            className={`w-full h-44 md:h-52 rounded-3xl bg-gradient-to-b from-amber-100/70 via-orange-50 to-amber-100/50 border-3 border-amber-300 p-4 flex flex-col items-center justify-center relative overflow-hidden transition-all shadow-inner ${
+            className={`w-full h-36 xs:h-40 sm:h-44 md:h-52 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-amber-100/70 via-orange-50 to-amber-100/50 border-3 border-amber-300 p-2.5 sm:p-4 flex flex-col items-center justify-center relative overflow-hidden transition-all shadow-inner ${
               isAnimating ? 'scale-[1.02] ring-4 ring-amber-400' : ''
             }`}
           >
@@ -311,10 +312,10 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
             {renderVisualStage()}
 
             {/* Hướng dẫn thao tác bước */}
-            <p className="text-sm md:text-base font-black text-amber-950 mt-1 max-w-sm">
+            <p className="text-xs sm:text-sm md:text-base font-black text-amber-950 mt-1 max-w-sm line-clamp-2">
               {activeStep.instruction}
             </p>
-            <span className="text-xs text-amber-800/80 font-medium">
+            <span className="text-[11px] sm:text-xs text-amber-800/80 font-medium hidden xs:inline">
               Chỉ cần 1 chạm để hoàn tất bước này
             </span>
           </div>
@@ -324,21 +325,21 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
             {steps.map((s, idx) => (
               <div
                 key={idx}
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-black transition-all ${
                   idx < currentStepIdx
-                    ? 'bg-emerald-500 text-white shadow-xs'
+                    ? 'bg-emerald-500 text-white shadow-2xs'
                     : idx === currentStepIdx
-                    ? 'bg-amber-600 text-white ring-2 ring-amber-300 scale-110 shadow-sm'
+                    ? 'bg-amber-600 text-white ring-2 ring-amber-300 scale-110 shadow-xs'
                     : 'bg-amber-200 text-amber-700'
                 }`}
               >
-                {idx < currentStepIdx ? <CheckCircle2 className="w-4 h-4" /> : idx + 1}
+                {idx < currentStepIdx ? <CheckCircle2 className="w-3.5 h-3.5" /> : idx + 1}
               </div>
             ))}
           </div>
 
           {/* ================= NÚT THAO TÁC TO BỰ ================= */}
-          <div className="w-full pt-2">
+          <div className="w-full pt-1.5 pb-[max(0.2rem,env(safe-area-inset-bottom))]">
             <GameButton
               variant="primary"
               size="lg"
@@ -351,7 +352,7 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
                   <ArrowRight className="w-5 h-5" />
                 )
               }
-              className="w-full text-base py-3.5 shadow-xl font-black uppercase tracking-wide transform hover:scale-[1.02] active:scale-95 transition-all"
+              className="w-full text-sm sm:text-base py-3 sm:py-3.5 min-h-[48px] shadow-xl font-black uppercase tracking-wide transform hover:scale-[1.02] active:scale-95 transition-all"
             >
               {isAnimating
                 ? 'Đang thực hiện...'

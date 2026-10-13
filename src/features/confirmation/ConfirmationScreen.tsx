@@ -27,7 +27,7 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
   );
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-4 md:p-6 bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none">
+    <div className="min-h-[100dvh] overflow-y-auto flex flex-col justify-between p-3 sm:p-5 md:p-6 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none">
       {/* Header */}
       <div className="max-w-xl mx-auto w-full text-center pt-2">
         <span className="bg-emerald-200 text-emerald-900 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider border border-emerald-300">
@@ -42,7 +42,7 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
       </div>
 
       {/* Thẻ tóm tắt khai trương */}
-      <div className="max-w-lg mx-auto w-full my-auto py-5 bg-white/95 border-4 border-amber-900/20 rounded-3xl p-5 md:p-7 shadow-2xl space-y-4">
+      <div className="max-w-lg mx-auto w-full my-auto py-4 sm:py-5 bg-white/95 border-4 border-amber-900/20 rounded-3xl p-4 sm:p-5 md:p-7 shadow-2xl space-y-4">
         {/* Banner tên quán */}
         <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-4 text-white text-center shadow-md">
           <span className="text-[11px] font-bold text-amber-100 uppercase tracking-widest block">
@@ -107,12 +107,13 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
       </div>
 
       {/* Điều hướng */}
-      <div className="max-w-xl mx-auto w-full flex items-center justify-between pt-2 pb-2">
+      <div className="max-w-xl mx-auto w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-3 pb-2">
         <GameButton
           variant="secondary"
           size="md"
           icon={<ArrowLeft className="w-4 h-4" />}
           onClick={onBack}
+          className="w-full sm:w-auto min-h-[44px] justify-center"
         >
           Quay Lại
         </GameButton>
@@ -122,7 +123,7 @@ export const ConfirmationScreen: React.FC<ConfirmationScreenProps> = ({
           size="lg"
           icon={<PartyPopper className="w-5 h-5" />}
           onClick={onStartDayOne}
-          className="text-base px-6 py-3 shadow-xl animate-bounce-gentle"
+          className="w-full sm:w-auto min-h-[48px] justify-center text-base px-6 py-3 shadow-xl animate-bounce-gentle font-black"
         >
           Khai Trương Ngày 1!
         </GameButton>

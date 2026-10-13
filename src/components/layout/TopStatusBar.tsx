@@ -51,8 +51,123 @@ export const TopStatusBar: React.FC<TopStatusBarProps> = React.memo(({
   const timeString = formatInGameTime(calendar.inGameMinute);
 
   return (
-    <header className="sticky top-0 z-40 bg-amber-100/98 border-b-2 border-amber-900/20 shadow-sm px-3 md:px-5 py-2.5">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+    <header className="sticky top-0 z-40 bg-amber-100/98 border-b-2 border-amber-900/20 shadow-sm px-2.5 sm:px-4 md:px-5 py-1.5 sm:py-2.5 pt-[max(0.5rem,env(safe-area-inset-top))]">
+      {/* ================= GIAO DIỆN MOBILE (< md): 2 DÒNG TINH GỌN, RÕ RÀNG ================= */}
+      <div className="md:hidden flex flex-col gap-1.5 w-full">
+        {/* Dòng 1 Mobile: Tiền mặt, Uy tín, Nút điều khiển nhanh */}
+        <div className="flex items-center justify-between gap-1.5">
+          {/* Cụm kinh tế */}
+          <div className="flex items-center gap-1.5 min-w-0">
+            {/* Tiền mặt */}
+            <div className="flex items-center gap-1 bg-white/95 border border-emerald-400 px-2 py-0.5 rounded-xl shadow-2xs">
+              {!coinImgError ? (
+                <img
+                  src="/assets/icons/coin_gold.jpg"
+                  alt="Tiền"
+                  className="w-3.5 h-3.5 rounded-full object-cover flex-shrink-0"
+                  onError={() => setCoinImgError(true)}
+                />
+              ) : (
+                <Coins className="w-3.5 h-3.5 text-amber-500 fill-amber-400 flex-shrink-0" />
+              )}
+              <span className="text-xs font-black text-emerald-800">
+                {formatCurrency(shop.cash)}
+              </span>
+            </div>
+
+            {/* Uy tín sao */}
+            <button
+              type="button"
+              onClick={onOpenReviews}
+              className="flex items-center gap-1 bg-white/95 border border-amber-300 px-1.5 py-0.5 rounded-xl text-xs font-black text-amber-950 active:scale-95 shadow-2xs"
+            >
+              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400 flex-shrink-0" />
+              <span>{shop.reputation}</span>
+            </button>
+
+            {/* Hài lòng */}
+            <button
+              type="button"
+              onClick={onOpenReviews}
+              className="flex items-center gap-0.5 bg-white/95 border border-rose-300 px-1.5 py-0.5 rounded-xl text-[11px] font-black text-rose-950 active:scale-95 shadow-2xs"
+            >
+              <span>{(shop.customerSatisfaction ?? 85) >= 80 ? '😍' : '😊'}</span>
+              <span>{shop.customerSatisfaction ?? 85}%</span>
+            </button>
+          </div>
+
+          {/* Cụm nút điều khiển: 1x/2x, Pause, Lưu, Cài đặt */}
+          <div className="flex items-center gap-1 flex-shrink-0">
+            <button
+              onClick={() => onChangeSpeed(timeSpeed === 1 ? 2 : 1)}
+              className={`px-1.5 py-0.5 rounded-lg text-[11px] font-black border transition-all ${
+                timeSpeed === 2
+                  ? 'bg-amber-600 text-white border-amber-700 shadow-inner'
+                  : 'bg-white/90 text-amber-900 border-amber-300'
+              }`}
+            >
+              {timeSpeed}x
+            </button>
+
+            <button
+              onClick={onTogglePause}
+              className={`p-1 rounded-lg border transition-all ${
+                isPaused
+                  ? 'bg-rose-500 text-white border-rose-700 animate-pulse'
+                  : 'bg-white/90 text-amber-900 border-amber-300'
+              }`}
+            >
+              {isPaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5" />}
+            </button>
+
+            <button
+              onClick={onSaveGame}
+              className="p-1 rounded-lg bg-white/90 hover:bg-emerald-100 text-amber-900 border border-amber-300 shadow-2xs active:scale-95"
+              title="Lưu game"
+            >
+              <Save className="w-3.5 h-3.5 text-emerald-600" />
+            </button>
+
+            <button
+              onClick={onOpenSettings}
+              className="p-1 rounded-lg bg-white/90 text-amber-900 border border-amber-300 shadow-2xs active:scale-95"
+              title="Cài đặt"
+            >
+              <Settings className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Dòng 2 Mobile: Ngày học, Đồng hồ và Mốc thời gian */}
+        <div className="flex items-center justify-between gap-1.5 text-xs">
+          <div className="flex items-center gap-1.5">
+            {/* Ngày & Tuần */}
+            <div className="bg-amber-900 text-amber-50 px-2 py-0.5 rounded-lg text-[11px] font-black shadow-2xs flex items-center gap-1">
+              <span>T{calendar.schoolWeek || 1} • N{calendar.day}</span>
+              <span className="text-amber-300 font-medium">({getDayOfWeekLabel(calendar.dayOfWeek)})</span>
+            </div>
+
+            {/* Đồng hồ */}
+            <div className="bg-white/90 border border-amber-300 px-1.5 py-0.5 rounded-lg text-[11px] font-black text-amber-950 flex items-center gap-1 shadow-2xs">
+              <Clock className="w-3 h-3 text-amber-600" />
+              <span>{timeString}</span>
+            </div>
+          </div>
+
+          {/* Mốc thời gian & Nút chuyển mốc */}
+          <button
+            onClick={onAdvancePeriod}
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-lg border text-[11px] font-extrabold shadow-2xs transition-all active:scale-95 ${periodInfo.badgeColor}`}
+            title="Bấm để chuyển nhanh sang mốc tiếp theo"
+          >
+            <span>{periodInfo.label}</span>
+            <FastForward className="w-3 h-3 text-amber-900" />
+          </button>
+        </div>
+      </div>
+
+      {/* ================= GIAO DIỆN DESKTOP / TABLET (>= md): HÀNG NGANG RỘNG RÃI ================= */}
+      <div className="hidden md:flex max-w-7xl mx-auto items-center justify-between gap-3">
         {/* ================= BÊN TRÁI: NGÀY, ĐỒNG HỒ & THỜI GIAN ================= */}
         <div className="flex items-center gap-2 flex-wrap">
           {/* Badge Ngày & Tuần */}

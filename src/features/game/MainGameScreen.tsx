@@ -238,7 +238,7 @@ export const MainGameScreen: React.FC = () => {
   const unclaimedQuestsCount = quests.filter((q) => q.completed && !q.claimed).length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-50 text-amber-950 pb-20 select-none">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col bg-amber-50 text-amber-950 pb-[calc(5.5rem+env(safe-area-inset-bottom))] select-none">
       {/* Toast thông báo lưu tiến trình */}
       <Toast isVisible={isSaveNotificationVisible} message={saveNotificationText} />
 
@@ -262,7 +262,7 @@ export const MainGameScreen: React.FC = () => {
       />
 
       {/* Khu vực nội dung game chính */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-3 md:px-5 py-3 md:py-4 space-y-4">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-2 sm:px-3 md:px-5 py-2 sm:py-3 md:py-4 space-y-3 sm:space-y-4">
         {/* 1. KHU VỰC CẢNH QUAN 2D CỔNG TRƯỜNG & QUẦY HÀNG */}
         <section aria-label="Cảnh quan trường học 2D">
           <SchoolGateScene
@@ -281,7 +281,7 @@ export const MainGameScreen: React.FC = () => {
         </section>
 
         {/* 2. KHU VỰC NỘI DUNG TƯƠNG ỨNG VỚI TAB QUẢN LÝ ĐANG CHỌN */}
-        <section className="bg-white/80 border-2 border-amber-900/15 rounded-3xl p-4 md:p-5 shadow-sm backdrop-blur-sm min-h-[300px]">
+        <section className="bg-white/80 border-2 border-amber-900/15 rounded-2xl sm:rounded-3xl p-3 sm:p-4 md:p-5 shadow-sm backdrop-blur-sm min-h-[300px]">
           {activeDockTab === 'service' && (
             <CustomerQueue
               orders={activeOrders}

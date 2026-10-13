@@ -203,7 +203,7 @@ export const PlayerFeedbackModal: React.FC<PlayerFeedbackModalProps> = ({
                 onChange={(e) => setPlayerName(e.target.value)}
                 maxLength={30}
                 placeholder="Nhập tên của bạn..."
-                className="w-full px-3.5 py-2 rounded-xl border-2 border-amber-300 bg-white text-xs md:text-sm font-bold text-amber-950 focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2 rounded-xl border-2 border-amber-300 bg-white text-base font-bold text-amber-950 focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -218,7 +218,7 @@ export const PlayerFeedbackModal: React.FC<PlayerFeedbackModalProps> = ({
                     key={star}
                     type="button"
                     onClick={() => setRating(star)}
-                    className="p-1 transition-transform hover:scale-125 focus:outline-none cursor-pointer"
+                    className="p-1 transition-transform hover:scale-125 focus:outline-none cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
                   >
                     <Star
                       className={`w-6 h-6 ${
@@ -230,11 +230,11 @@ export const PlayerFeedbackModal: React.FC<PlayerFeedbackModalProps> = ({
                   </button>
                 ))}
                 <span className="text-xs font-black text-amber-800 ml-2">
-                  {rating === 5 && '🌟 Tuyệt vời ông mặt trời!'}
-                  {rating === 4 && '😊 Rất thích và dễ thương'}
-                  {rating === 3 && '👍 Khá ổn, cần cải thiện thêm'}
-                  {rating === 2 && '😐 Còn một số điểm chưa hài lòng'}
-                  {rating === 1 && '😢 Cần khắc phục nhiều lỗi'}
+                  {rating === 5 && '🌟 Tuyệt vời!'}
+                  {rating === 4 && '😊 Rất thích'}
+                  {rating === 3 && '👍 Khá ổn'}
+                  {rating === 2 && '😐 Chưa hài lòng'}
+                  {rating === 1 && '😢 Cần sửa lỗi'}
                 </span>
               </div>
             </div>
@@ -251,7 +251,7 @@ export const PlayerFeedbackModal: React.FC<PlayerFeedbackModalProps> = ({
                 rows={3}
                 required
                 placeholder="Chia sẻ cảm nhận, món ăn muốn thêm, lỗi bạn gặp phải hoặc điều bạn muốn tiệm có thêm..."
-                className="w-full px-3.5 py-2 rounded-xl border-2 border-amber-300 bg-white text-xs md:text-sm text-amber-950 focus:outline-none focus:border-amber-500 font-medium leading-relaxed resize-none"
+                className="w-full px-3.5 py-2 rounded-xl border-2 border-amber-300 bg-white text-base text-amber-950 focus:outline-none focus:border-amber-500 font-medium leading-relaxed resize-none"
               ></textarea>
               <div className="flex justify-between items-center text-[10px] text-amber-800/70 mt-0.5">
                 <span>Dữ liệu được lưu trữ an toàn trên thiết bị của bạn.</span>

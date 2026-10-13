@@ -48,12 +48,12 @@ export const IntroStoryScreen: React.FC<IntroStoryScreenProps> = ({ onContinue, 
   const slide = slides[currentSlide];
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between p-6 bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none relative overflow-hidden">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col items-center justify-between p-3 sm:p-6 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none relative overflow-y-auto">
       {/* Nút bỏ qua nhanh */}
-      <div className="w-full max-w-lg flex justify-end z-10 pt-2">
+      <div className="w-full max-w-lg flex justify-end z-10 pt-1">
         <button
           onClick={onSkip}
-          className="text-xs font-bold text-amber-900/70 hover:text-amber-950 flex items-center gap-1 bg-white/60 hover:bg-white px-3 py-1.5 rounded-full border border-amber-300/80 transition-all shadow-sm"
+          className="text-xs font-bold text-amber-900/70 hover:text-amber-950 flex items-center gap-1 bg-white/70 hover:bg-white px-3 py-1.5 rounded-full border border-amber-300/80 transition-all shadow-xs active:scale-95"
         >
           <span>Bỏ qua dẫn truyện</span>
           <SkipForward className="w-3.5 h-3.5" />
@@ -61,13 +61,13 @@ export const IntroStoryScreen: React.FC<IntroStoryScreenProps> = ({ onContinue, 
       </div>
 
       {/* Thẻ truyện dạng Storybook */}
-      <div className="w-full max-w-lg bg-white/95 border-4 border-amber-900/20 rounded-3xl p-6 md:p-8 shadow-2xl z-10 my-auto text-center space-y-4">
-        <span className="inline-block bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+      <div className="w-full max-w-lg bg-white/95 border-3 sm:border-4 border-amber-900/20 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl z-10 my-auto text-center space-y-3 sm:space-y-4">
+        <span className="inline-block bg-amber-100 text-amber-900 border border-amber-300 text-[11px] sm:text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
           {slide.badge}
         </span>
 
         {/* Khung ảnh minh họa truyện 2D */}
-        <div className="w-full max-w-[280px] h-36 mx-auto rounded-2xl overflow-hidden bg-amber-50 border-3 border-amber-300 shadow-md flex items-center justify-center relative">
+        <div className="w-full max-w-[240px] sm:max-w-[280px] h-28 sm:h-36 mx-auto rounded-2xl overflow-hidden bg-amber-50 border-3 border-amber-300 shadow-md flex items-center justify-center relative">
           {slide.imageUrl ? (
             <img
               src={slide.imageUrl}
@@ -75,22 +75,24 @@ export const IntroStoryScreen: React.FC<IntroStoryScreenProps> = ({ onContinue, 
               className="w-full h-full object-cover select-none"
             />
           ) : (
-            <span className="text-5xl">{slide.icon}</span>
+            <span className="text-4xl sm:text-5xl">{slide.icon}</span>
           )}
         </div>
 
-        <h2 className="text-xl md:text-2xl font-black text-amber-950">{slide.title}</h2>
+        <h2 className="text-lg sm:text-xl md:text-2xl font-black text-amber-950 leading-tight">
+          {slide.title}
+        </h2>
 
-        <p className="text-sm md:text-base text-amber-900 leading-relaxed font-medium">
+        <p className="text-xs sm:text-sm md:text-base text-amber-900 leading-relaxed font-medium">
           {slide.text}
         </p>
 
-        <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200 text-xs italic text-amber-800">
+        <div className="p-2.5 sm:p-3 bg-amber-50 rounded-2xl border border-amber-200 text-[11px] sm:text-xs italic text-amber-800">
           "{slide.vibe}"
         </div>
 
         {/* Chỉ báo chấm tròn slide */}
-        <div className="flex justify-center gap-2 pt-2">
+        <div className="flex justify-center gap-2 pt-1">
           {slides.map((_, i) => (
             <div
               key={i}
@@ -103,13 +105,13 @@ export const IntroStoryScreen: React.FC<IntroStoryScreenProps> = ({ onContinue, 
       </div>
 
       {/* Nút tiếp tục */}
-      <div className="w-full max-w-lg flex justify-end z-10 pb-4">
+      <div className="w-full max-w-lg flex justify-end z-10 pt-3 pb-2">
         <GameButton
           variant="primary"
           size="lg"
           icon={currentSlide === slides.length - 1 ? <ArrowRight className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
           onClick={handleNext}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto min-h-[46px]"
         >
           {currentSlide === slides.length - 1 ? 'Chọn Mô Hình Kinh Doanh' : 'Trang Tiếp Theo'}
         </GameButton>

@@ -51,6 +51,7 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
   const [cart, setCart] = useState<Record<string, number>>({});
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [mobileTab, setMobileTab] = useState<'catalog' | 'cart'>('catalog');
   const [feedbackNotice, setFeedbackNotice] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   // Nếu mở từ một đơn hàng thiếu cụ thể
@@ -209,52 +210,84 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
     }
   };
 
+  const totalItemsCount = Object.values(cart).reduce((sum, count) => sum + count, 0);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6 bg-slate-950/70 backdrop-blur-xs select-none animate-in fade-in">
-      <div className="w-full max-w-4xl bg-white rounded-3xl border-4 border-amber-900/30 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-slate-950/70 backdrop-blur-xs select-none animate-in fade-in">
+      <div className="w-full max-w-4xl bg-white rounded-3xl border-3 sm:border-4 border-amber-900/30 shadow-2xl overflow-hidden flex flex-col max-h-[calc(100dvh-16px)] sm:max-h-[92vh]">
         {/* ================= HEADER ================= */}
-        <div className="bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 p-4 text-white flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shadow-inner">
+        <div className="bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 px-3.5 sm:px-4 py-3 sm:py-3.5 text-white flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 pr-2">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 flex items-center justify-center shadow-inner flex-shrink-0">
               <Store className="w-5 h-5 text-yellow-200" />
             </div>
-            <div>
-              <h3 className="font-black text-base md:text-lg leading-tight">
+            <div className="min-w-0">
+              <h3 className="font-black text-sm sm:text-base md:text-lg leading-tight truncate">
                 Chợ Đầu Mối • Cửa Hàng Nhập Nguyên Liệu
               </h3>
-              <p className="text-[11px] text-amber-100 font-medium">
+              <p className="text-[10px] sm:text-[11px] text-amber-100 font-medium truncate">
                 Giá gốc từ nhà phân phối • Giao ngay lập tức vào kho
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-all active:scale-95"
+            className="w-9 h-9 min-w-[36px] min-h-[36px] rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-all active:scale-95 flex-shrink-0"
+            aria-label="Đóng"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* ================= THANH TỔNG QUAN VỐN & SỨC CHỨA ================= */}
-        <div className="px-4 py-2.5 bg-amber-50 border-b border-amber-200 flex flex-wrap items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-3">
-            <span className="font-bold text-amber-900">
-              Tiền mặt khả dụng:{' '}
-              <span className="font-black text-emerald-700 text-sm">{formatCurrency(cash)}</span>
+        <div className="px-3 sm:px-4 py-2 bg-amber-50 border-b border-amber-200 flex flex-wrap items-center justify-between gap-1.5 text-xs">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span className="font-bold text-amber-900 text-[11px] sm:text-xs">
+              Vốn khả dụng:{' '}
+              <span className="font-black text-emerald-700 text-xs sm:text-sm">{formatCurrency(cash)}</span>
             </span>
-            <span className="text-amber-300">|</span>
-            <span className="font-bold text-amber-900 flex items-center gap-1">
+            <span className="text-amber-300 hidden sm:inline">|</span>
+            <span className="font-bold text-amber-900 flex items-center gap-1 text-[11px] sm:text-xs">
               <Boxes className="w-3.5 h-3.5 text-amber-700" /> Kho: {usedCapacity} / {maxCapacity} phần
             </span>
           </div>
 
           <button
             onClick={handleAutoFillMissing}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold px-3 py-1 rounded-xl text-[11px] shadow-sm flex items-center gap-1 transition-all active:scale-95"
+            className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold px-2.5 py-1 rounded-xl text-[10px] sm:text-[11px] shadow-xs flex items-center gap-1 transition-all active:scale-95"
             title="Tự động tính toán các nguyên liệu thiếu của đơn hàng và điền vào giỏ"
           >
-            <Zap className="w-3.5 h-3.5 text-yellow-200 fill-yellow-200" />
-            Nhập Nhanh Nguyên Liệu Thiếu
+            <Zap className="w-3 h-3 text-yellow-200 fill-yellow-200" />
+            Nhập Nhanh Món Thiếu
+          </button>
+        </div>
+
+        {/* ================= THANH TAB MOBILE: CHỌN HÀNG VS GIỎ HÀNG ================= */}
+        <div className="md:hidden flex border-b-2 border-amber-200 bg-amber-50/80 shrink-0">
+          <button
+            type="button"
+            onClick={() => setMobileTab('catalog')}
+            className={`flex-1 py-2 text-xs font-black flex items-center justify-center gap-1.5 border-b-2 transition-all ${
+              mobileTab === 'catalog'
+                ? 'border-orange-500 text-orange-950 bg-white shadow-2xs'
+                : 'border-transparent text-amber-850 hover:bg-amber-100'
+            }`}
+          >
+            <Store className="w-3.5 h-3.5" />
+            <span>Chọn Hàng ({ingredientsList.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileTab('cart')}
+            className={`flex-1 py-2 text-xs font-black flex items-center justify-center gap-1.5 border-b-2 transition-all ${
+              mobileTab === 'cart'
+                ? 'border-orange-500 text-orange-950 bg-white shadow-2xs'
+                : 'border-transparent text-amber-850 hover:bg-amber-100'
+            }`}
+          >
+            <ShoppingCart className="w-3.5 h-3.5" />
+            <span>Giỏ ({totalItemsCount})</span>
+            {totalBill > 0 && <span className="text-emerald-700">({formatCurrency(totalBill)})</span>}
           </button>
         </div>
 
@@ -277,11 +310,15 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
         )}
 
         {/* ================= THÂN MODAL: DANH SÁCH HÀNG & GIỎ HÀNG ================= */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 overflow-hidden">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 overflow-hidden min-h-0">
           {/* CỘT TRÁI (2 PHẦN): DANH SÁCH MẶT HÀNG NHÀ CUNG CẤP */}
-          <div className="md:col-span-2 p-4 flex flex-col overflow-y-auto border-r border-amber-200 space-y-3">
+          <div
+            className={`p-3 sm:p-4 flex-col overflow-y-auto border-r border-amber-200 space-y-3 ${
+              mobileTab === 'catalog' ? 'flex md:col-span-2' : 'hidden md:flex md:col-span-2'
+            }`}
+          >
             {/* Bộ lọc danh mục & Tìm kiếm */}
-            <div className="flex flex-col sm:flex-row gap-2 justify-between">
+            <div className="flex flex-col sm:flex-row gap-2 justify-between shrink-0">
               <div className="flex gap-1 overflow-x-auto pb-1 no-scrollbar">
                 {categories.map((c) => (
                   <button
@@ -302,12 +339,12 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
                 placeholder="Tìm nguyên liệu..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="text-xs px-3 py-1 bg-amber-50 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="text-xs px-3 py-1.5 bg-amber-50 rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-950 placeholder-amber-800/60"
               />
             </div>
 
             {/* Lưới mặt hàng */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 flex-1 overflow-y-auto pr-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 flex-1 overflow-y-auto pr-0.5">
               {ingredientsList.map((ing) => {
                 const countInCart = cart[ing.id] || 0;
                 const inStock = inventory[ing.id] || 0;
@@ -342,22 +379,24 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
                     </div>
 
                     {/* Bộ nút chọn số lượng */}
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
                       <button
                         onClick={() => handleUpdateCart(ing.id, -1)}
                         disabled={countInCart === 0}
-                        className="w-6 h-6 rounded-lg bg-amber-100 hover:bg-amber-200 disabled:opacity-30 font-black text-amber-900 flex items-center justify-center transition-all"
+                        className="w-7 h-7 sm:w-6 sm:h-6 rounded-lg bg-amber-100 hover:bg-amber-200 disabled:opacity-30 font-black text-amber-900 flex items-center justify-center transition-all active:scale-95"
+                        aria-label={`Giảm ${ing.name}`}
                       >
-                        <Minus className="w-3 h-3" />
+                        <Minus className="w-3.5 h-3.5" />
                       </button>
                       <span className="w-5 text-center font-black text-xs text-amber-950">
                         {countInCart}
                       </span>
                       <button
                         onClick={() => handleUpdateCart(ing.id, 1)}
-                        className="w-6 h-6 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-black flex items-center justify-center shadow-xs transition-all active:scale-95"
+                        className="w-7 h-7 sm:w-6 sm:h-6 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-black flex items-center justify-center shadow-xs transition-all active:scale-95"
+                        aria-label={`Tăng ${ing.name}`}
                       >
-                        <Plus className="w-3 h-3" />
+                        <Plus className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -367,7 +406,11 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
           </div>
 
           {/* CỘT PHẢI (1 PHẦN): GIỎ HÀNG NHẬP HÀNG & XÁC NHẬN */}
-          <div className="p-4 bg-amber-50/60 flex flex-col justify-between overflow-hidden">
+          <div
+            className={`p-3 sm:p-4 bg-amber-50/60 flex-col justify-between overflow-y-auto ${
+              mobileTab === 'cart' ? 'flex' : 'hidden md:flex'
+            }`}
+          >
             <div>
               <div className="flex items-center justify-between border-b border-amber-200 pb-2 mb-2">
                 <span className="font-black text-xs text-amber-950 flex items-center gap-1.5 uppercase">
@@ -376,7 +419,7 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
                 {Object.keys(cart).length > 0 && (
                   <button
                     onClick={handleClearCart}
-                    className="text-[10px] text-rose-600 hover:text-rose-800 font-extrabold flex items-center gap-0.5"
+                    className="text-[10px] text-rose-600 hover:text-rose-800 font-extrabold flex items-center gap-0.5 active:scale-95"
                   >
                     <Trash2 className="w-3 h-3" /> Xóa giỏ
                   </button>
@@ -384,7 +427,7 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
               </div>
 
               {/* Danh sách trong giỏ */}
-              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+              <div className="space-y-1.5 max-h-56 md:max-h-64 overflow-y-auto pr-1">
                 {Object.keys(cart).length === 0 ? (
                   <div className="text-center py-8 text-amber-800/60 text-xs italic">
                     Chưa có mặt hàng nào trong giỏ.<br />
@@ -419,8 +462,8 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
               </div>
             </div>
 
-            {/* Tổng kết và nút xác nhận mua */}
-            <div className="pt-3 border-t border-amber-200 space-y-2.5">
+            {/* Tổng kết và nút xác nhận mua trên Desktop */}
+            <div className="pt-3 border-t border-amber-200 space-y-2.5 hidden md:block">
               <div className="space-y-1 text-xs">
                 <div className="flex justify-between text-amber-900 font-bold">
                   <span>Tổng tiền hàng:</span>
@@ -447,6 +490,36 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
                   : 'Xác Nhận Nhập Hàng'}
               </GameButton>
             </div>
+          </div>
+        </div>
+
+        {/* ================= THANH TỔNG KẾT & XÁC NHẬN CỐ ĐỊNH TRÊN MOBILE ================= */}
+        <div className="md:hidden p-3 bg-white border-t-2 border-amber-300 flex items-center justify-between gap-2 shadow-lg z-10 shrink-0 pb-[max(0.6rem,env(safe-area-inset-bottom))]">
+          <div className="min-w-0 flex-1">
+            <div className="text-[11px] text-amber-800 font-bold truncate">
+              Tổng: <span className="font-black text-sm text-emerald-800">{formatCurrency(totalBill)}</span>
+            </div>
+            <div className="text-[10px] text-amber-700 truncate">
+              {totalItemsCount} gói • +{totalIncomingCapacity} chỗ kho
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setMobileTab(mobileTab === 'catalog' ? 'cart' : 'catalog')}
+              className="px-2.5 py-1.5 rounded-xl text-xs font-black bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 min-h-[38px] active:scale-95 transition-all"
+            >
+              {mobileTab === 'catalog' ? `Xem Giỏ (${totalItemsCount})` : 'Thêm Hàng'}
+            </button>
+            <GameButton
+              variant="primary"
+              size="sm"
+              onClick={handleConfirm}
+              disabled={totalItemsCount === 0 || cash < totalBill}
+              className="font-black text-xs px-3.5 py-1.5 min-h-[38px] shadow-md"
+            >
+              {cash < totalBill ? 'Thiếu tiền' : 'Nhập Hàng'}
+            </GameButton>
           </div>
         </div>
       </div>

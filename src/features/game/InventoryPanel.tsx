@@ -330,7 +330,7 @@ export const InventoryPanel: React.FC<InventoryPanelProps> = React.memo(({
                   placeholder="Tìm nguyên liệu..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full text-xs pl-8 pr-2.5 py-1.5 bg-[#FAF7F2] rounded-xl border border-[#E8DEC8] focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-950 placeholder-amber-800/50"
+                  className="w-full text-base sm:text-xs pl-8 pr-2.5 py-1.5 bg-[#FAF7F2] rounded-xl border border-[#E8DEC8] focus:outline-none focus:ring-2 focus:ring-amber-500 text-amber-950 placeholder-amber-800/50"
                 />
               </div>
 
@@ -340,7 +340,7 @@ export const InventoryPanel: React.FC<InventoryPanelProps> = React.memo(({
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-transparent text-xs font-bold text-amber-950 focus:outline-none cursor-pointer"
+                  className="bg-transparent text-base sm:text-xs font-bold text-amber-950 focus:outline-none cursor-pointer"
                 >
                   <option value="low_stock">Sắp hết lên đầu</option>
                   <option value="name">Tên A-Z</option>

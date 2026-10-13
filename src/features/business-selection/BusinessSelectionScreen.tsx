@@ -25,13 +25,13 @@ export const BusinessSelectionScreen: React.FC<BusinessSelectionScreenProps> = (
   const modelKeys = Object.keys(BUSINESS_MODELS) as BusinessModelId[];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-4 md:p-6 bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none">
+    <div className="min-h-screen min-h-[100dvh] flex flex-col justify-between p-3 sm:p-5 md:p-6 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none overflow-y-auto">
       {/* Header */}
-      <div className="max-w-4xl mx-auto w-full text-center pt-2">
-        <span className="bg-amber-200 text-amber-900 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider border border-amber-300">
+      <div className="max-w-4xl mx-auto w-full text-center pt-1 sm:pt-2">
+        <span className="bg-amber-200 text-amber-900 px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-black uppercase tracking-wider border border-amber-300">
           Bước 1 / 3: Chọn Hướng Đi
         </span>
-        <h2 className="text-2xl md:text-3xl font-black text-amber-950 mt-2">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-amber-950 mt-1.5 sm:mt-2 leading-tight">
           Chọn Mô Hình Kinh Doanh Khởi Nghiệp
         </h2>
         <p className="text-xs md:text-sm text-amber-800 font-medium mt-1">
@@ -40,7 +40,7 @@ export const BusinessSelectionScreen: React.FC<BusinessSelectionScreenProps> = (
       </div>
 
       {/* Grid 3 mô hình */}
-      <div className="max-w-5xl mx-auto w-full my-auto py-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="max-w-5xl mx-auto w-full my-auto py-3 sm:py-4 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
         {modelKeys.map((key) => {
           const model = BUSINESS_MODELS[key];
           const isSelected = selectedModelId === key;
@@ -183,12 +183,13 @@ export const BusinessSelectionScreen: React.FC<BusinessSelectionScreenProps> = (
       </div>
 
       {/* Điều hướng dưới cùng */}
-      <div className="max-w-4xl mx-auto w-full flex items-center justify-between pt-2 pb-2">
+      <div className="max-w-4xl mx-auto w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-3 pb-4">
         <GameButton
           variant="secondary"
           size="md"
           icon={<ArrowLeft className="w-4 h-4" />}
           onClick={onBack}
+          className="w-full sm:w-auto min-h-[44px] justify-center"
         >
           Quay Lại
         </GameButton>
@@ -198,6 +199,7 @@ export const BusinessSelectionScreen: React.FC<BusinessSelectionScreenProps> = (
           size="md"
           icon={<ArrowRight className="w-4 h-4" />}
           onClick={onConfirm}
+          className="w-full sm:w-auto min-h-[46px] justify-center shadow-md font-bold"
         >
           Tiếp Tục: Đặt Tên Quán
         </GameButton>

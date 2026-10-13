@@ -93,7 +93,7 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = React.memo(({
 
   return (
     <div
-      className={`relative w-full h-[270px] md:h-[320px] rounded-3xl overflow-hidden border-4 border-amber-900/25 shadow-lg bg-gradient-to-b ${getSkyGradient()} select-none transition-all duration-700`}
+      className={`relative w-full h-[210px] sm:h-[260px] md:h-[320px] rounded-2xl sm:rounded-3xl overflow-hidden border-3 sm:border-4 border-amber-900/25 shadow-lg bg-gradient-to-b ${getSkyGradient()} select-none transition-all duration-700`}
     >
       {/* ẢNH MINH HỌA NỀN 2D CỔNG TRƯỜNG THỰC TẾ */}
       {!bgFailed && (
@@ -262,7 +262,7 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = React.memo(({
       </div>
 
       {/* ================= QUẦY HÀNG CỦA NGƯỜI CHƠI & NGƯỜI BÁN HÀNG ================= */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-[340px] md:max-w-[400px]">
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-[270px] sm:max-w-[340px] md:max-w-[400px]">
         {/* Người bán hàng đứng sau quầy chào đón khách */}
         <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
           <ShopkeeperSprite
@@ -283,7 +283,7 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = React.memo(({
       </div>
 
       {/* ================= HÀNG ĐỢI KHÁCH HÀNG THỰC TẾ TRÊN VỈA HÈ ================= */}
-      <div className="absolute bottom-1 left-2 sm:left-4 md:left-6 z-30 pointer-events-auto max-w-[50%] sm:max-w-[55%] md:max-w-[42%] overflow-x-auto overflow-y-visible py-1 no-scrollbar">
+      <div className="absolute bottom-1 left-1.5 sm:left-4 md:left-6 z-30 pointer-events-auto max-w-[48%] sm:max-w-[55%] md:max-w-[42%] overflow-x-auto overflow-y-visible py-1 no-scrollbar">
         <SceneCustomerQueue
           orders={orders}
           onServe={onServeOrder}

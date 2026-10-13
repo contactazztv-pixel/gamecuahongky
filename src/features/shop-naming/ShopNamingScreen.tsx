@@ -65,7 +65,7 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-4 md:p-6 bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none">
+    <div className="min-h-[100dvh] overflow-y-auto flex flex-col justify-between p-3 sm:p-5 md:p-6 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] bg-gradient-to-b from-amber-100 via-orange-50 to-amber-200 select-none">
       {/* Header */}
       <div className="max-w-xl mx-auto w-full text-center pt-2">
         <span className="bg-amber-200 text-amber-900 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider border border-amber-300">
@@ -80,9 +80,9 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
       </div>
 
       {/* Form & Biển hiệu xem trước */}
-      <div className="max-w-lg mx-auto w-full my-auto py-6 space-y-5">
+      <div className="max-w-lg mx-auto w-full my-auto py-4 sm:py-6 space-y-4 sm:space-y-5">
         {/* Biển hiệu xem trước */}
-        <div className="bg-amber-900 text-amber-100 p-5 rounded-3xl border-4 border-amber-400 shadow-xl text-center relative overflow-hidden">
+        <div className="bg-amber-900 text-amber-100 p-4 sm:p-5 rounded-3xl border-4 border-amber-400 shadow-xl text-center relative overflow-hidden">
           <div className="absolute top-0 inset-x-0 h-1.5 bg-amber-300"></div>
           <span className="text-[10px] font-black text-amber-300 tracking-widest uppercase">
             {model.name}
@@ -96,7 +96,7 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
         </div>
 
         {/* Input Tên Cửa Hàng */}
-        <div className="bg-white/95 border-2 border-amber-900/15 rounded-3xl p-5 shadow-md space-y-4">
+        <div className="bg-white/95 border-2 border-amber-900/15 rounded-3xl p-4 sm:p-5 shadow-md space-y-4">
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-xs font-extrabold text-amber-950 flex items-center gap-1.5">
@@ -106,9 +106,9 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
               <button
                 type="button"
                 onClick={handleRandomizeShopName}
-                className="text-[11px] font-extrabold text-amber-800 hover:text-amber-950 flex items-center gap-1 bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded-lg transition-colors"
+                className="text-[11px] font-extrabold text-amber-800 hover:text-amber-950 flex items-center gap-1 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-lg transition-colors min-h-[32px]"
               >
-                <Dices className="w-3 h-3" /> Gợi ý tên hay
+                <Dices className="w-3.5 h-3.5" /> Gợi ý tên hay
               </button>
             </div>
             <input
@@ -117,7 +117,7 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
               onChange={(e) => onShopNameChange(e.target.value)}
               maxLength={40}
               placeholder="Nhập tên quán của bạn..."
-              className="w-full px-4 py-2.5 rounded-2xl border-2 border-amber-300 focus:border-amber-600 focus:outline-none font-bold text-amber-950 text-sm md:text-base bg-amber-50/50"
+              className="w-full px-4 py-2.5 rounded-2xl border-2 border-amber-300 focus:border-amber-600 focus:outline-none font-bold text-amber-950 text-base bg-amber-50/50"
             />
           </div>
 
@@ -131,9 +131,9 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
               <button
                 type="button"
                 onClick={handleRandomizePlayerName}
-                className="text-[11px] font-extrabold text-amber-800 hover:text-amber-950 flex items-center gap-1 bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded-lg transition-colors"
+                className="text-[11px] font-extrabold text-amber-800 hover:text-amber-950 flex items-center gap-1 bg-amber-100 hover:bg-amber-200 px-2.5 py-1 rounded-lg transition-colors min-h-[32px]"
               >
-                <Dices className="w-3 h-3" /> Ngẫu nhiên
+                <Dices className="w-3.5 h-3.5" /> Ngẫu nhiên
               </button>
             </div>
             <input
@@ -142,19 +142,20 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
               onChange={(e) => onPlayerNameChange(e.target.value)}
               maxLength={20}
               placeholder="Nhập tên của bạn..."
-              className="w-full px-4 py-2.5 rounded-2xl border-2 border-amber-300 focus:border-amber-600 focus:outline-none font-bold text-amber-950 text-sm md:text-base bg-amber-50/50"
+              className="w-full px-4 py-2.5 rounded-2xl border-2 border-amber-300 focus:border-amber-600 focus:outline-none font-bold text-amber-950 text-base bg-amber-50/50"
             />
           </div>
         </div>
       </div>
 
       {/* Điều hướng */}
-      <div className="max-w-xl mx-auto w-full flex items-center justify-between pt-2 pb-2">
+      <div className="max-w-xl mx-auto w-full flex flex-col-reverse sm:flex-row items-center justify-between gap-3 pt-3 pb-2">
         <GameButton
           variant="secondary"
           size="md"
           icon={<ArrowLeft className="w-4 h-4" />}
           onClick={onBack}
+          className="w-full sm:w-auto min-h-[44px] justify-center"
         >
           Quay Lại
         </GameButton>
@@ -165,6 +166,7 @@ export const ShopNamingScreen: React.FC<ShopNamingScreenProps> = ({
           icon={<ArrowRight className="w-4 h-4" />}
           onClick={onConfirm}
           disabled={!shopName.trim()}
+          className="w-full sm:w-auto min-h-[46px] justify-center shadow-md font-bold"
         >
           Xác Nhận Vốn & Bắt Đầu
         </GameButton>

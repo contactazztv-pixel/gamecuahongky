@@ -48,6 +48,16 @@ export const RegularsPanel: React.FC = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (selectedCustomer || isReplayingIntro) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [selectedCustomer, isReplayingIntro]);
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-amber-200/80">
@@ -66,7 +76,7 @@ export const RegularsPanel: React.FC = () => {
             soundManager.playClick();
             setIsReplayingIntro(true);
           }}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-100 hover:bg-amber-200 text-amber-950 text-xs font-bold transition-all shadow-xs cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-100 hover:bg-amber-200 text-amber-950 text-xs font-bold transition-all shadow-xs cursor-pointer self-start sm:self-auto min-h-[36px]"
         >
           <Film className="w-3.5 h-3.5 text-amber-800" />
           <span>Xem Lại Cốt Truyện Quán</span>
@@ -194,6 +204,7 @@ export const RegularsPanel: React.FC = () => {
                   size="sm"
                   onClick={() => setSelectedCustomer(customer)}
                   icon={<BookOpen className="w-3.5 h-3.5" />}
+                  className="min-h-[36px]"
                 >
                   Cốt Truyện
                 </GameButton>
@@ -234,8 +245,16 @@ export const RegularsPanel: React.FC = () => {
         ];
 
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/60 backdrop-blur-xs">
-            <div className="bg-white rounded-3xl border-4 border-amber-400 p-5 md:p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl space-y-4">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/60 backdrop-blur-xs"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                soundManager.playClick();
+                setSelectedCustomer(null);
+              }
+            }}
+          >
+            <div className="bg-white rounded-3xl border-4 border-amber-400 p-4 sm:p-5 md:p-6 max-w-lg w-full max-h-[calc(100dvh-20px)] sm:max-h-[90vh] overflow-y-auto shadow-2xl space-y-4">
               {/* Header Modal */}
               <div className="flex items-center justify-between pb-3 border-b-2 border-amber-200">
                 <div className="flex items-center gap-3">
@@ -260,7 +279,7 @@ export const RegularsPanel: React.FC = () => {
                     soundManager.playClick();
                     setSelectedCustomer(null);
                   }}
-                  className="p-1.5 rounded-xl hover:bg-amber-100 text-amber-800 transition-all cursor-pointer"
+                  className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl hover:bg-amber-100 text-amber-800 transition-all cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -273,7 +292,7 @@ export const RegularsPanel: React.FC = () => {
                     soundManager.playClick();
                     setActiveStoryTab('stories');
                   }}
-                  className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all ${
+                  className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all min-h-[36px] ${
                     activeStoryTab === 'stories'
                       ? 'bg-amber-500 text-white shadow-sm'
                       : 'text-amber-900/80 hover:bg-amber-200/60'
@@ -287,7 +306,7 @@ export const RegularsPanel: React.FC = () => {
                     soundManager.playClick();
                     setActiveStoryTab('dialogues');
                   }}
-                  className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all ${
+                  className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all min-h-[36px] ${
                     activeStoryTab === 'dialogues'
                       ? 'bg-amber-500 text-white shadow-sm'
                       : 'text-amber-900/80 hover:bg-amber-200/60'
@@ -401,7 +420,7 @@ export const RegularsPanel: React.FC = () => {
                     soundManager.playClick();
                     setSelectedCustomer(null);
                   }}
-                  className="px-6"
+                  className="w-full sm:w-auto min-h-[44px] px-6 justify-center"
                 >
                   Đóng Sổ Tay
                 </GameButton>
@@ -413,8 +432,15 @@ export const RegularsPanel: React.FC = () => {
 
       {/* MODAL XEM LẠI CỐT TRUYỆN MỞ ĐẦU GAME */}
       {isReplayingIntro && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-2">
-          <div className="w-full max-w-2xl max-h-[96vh] overflow-y-auto">
+        <div
+          className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-2"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsReplayingIntro(false);
+            }
+          }}
+        >
+          <div className="w-full max-w-2xl max-h-[calc(100dvh-16px)] sm:max-h-[96vh] overflow-y-auto">
             <IntroStoryScreen
               onContinue={() => setIsReplayingIntro(false)}
               onSkip={() => setIsReplayingIntro(false)}
