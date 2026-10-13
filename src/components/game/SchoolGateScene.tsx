@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { TimePeriod, WeatherType, BusinessModelId } from '@/game/types';
+import { TimePeriod, WeatherType, BusinessModelId, ActiveOrder } from '@/game/types';
 import { StallIllustration } from './StallIllustration';
+import { ShopkeeperSprite, ShopkeeperSkin, ShopkeeperAction } from './ShopkeeperSprite';
+import { SceneCustomerQueue } from './SceneCustomerQueue';
 
 interface SchoolGateSceneProps {
   modelId: BusinessModelId;
@@ -9,6 +11,11 @@ interface SchoolGateSceneProps {
   upgrades: string[];
   timePeriod: TimePeriod;
   weather: WeatherType;
+  shopkeeperSkin?: ShopkeeperSkin;
+  orders?: ActiveOrder[];
+  onServeOrder?: (orderId: string) => void;
+  onOpenCooking?: (order: ActiveOrder) => void;
+  onCallCustomer?: () => void;
 }
 
 export const SchoolGateScene: React.FC<SchoolGateSceneProps> = ({
@@ -18,8 +25,21 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = ({
   upgrades,
   timePeriod,
   weather,
+  shopkeeperSkin = 'bao_an',
+  orders = [],
+  onServeOrder = () => {},
+  onOpenCooking,
+  onCallCustomer,
 }) => {
   const [bgFailed, setBgFailed] = useState(false);
+
+  // Xác định hoạt ảnh người bán hàng theo trạng thái đơn thực tế
+  const getShopkeeperAction = (): ShopkeeperAction => {
+    if (!orders || orders.length === 0) return 'idle';
+    if (orders.some((o) => o.status === 'ready_to_serve')) return 'serving';
+    if (orders.some((o) => o.status === 'preparing')) return 'cooking';
+    return 'idle';
+  };
 
   // Chọn ảnh nền theo thời gian thực của game
   const isAfternoonOrNight = ['afternoon_bell', 'evening_chill', 'day_end'].includes(timePeriod);
@@ -241,13 +261,34 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = ({
         <div className="absolute bottom-0 inset-x-0 h-2 bg-slate-400 border-t border-slate-500"></div>
       </div>
 
-      {/* ================= QUẦY HÀNG CỦA NGƯỜI CHƠI ================= */}
+      {/* ================= QUẦY HÀNG CỦA NGƯỜI CHƠI & NGƯỜI BÁN HÀNG ================= */}
       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-[340px] md:max-w-[400px]">
-        <StallIllustration
-          modelId={modelId}
-          shopName={shopName}
-          level={level}
-          hasUpgrades={upgrades}
+        {/* Người bán hàng đứng sau quầy chào đón khách */}
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-10 pointer-events-auto">
+          <ShopkeeperSprite
+            skin={shopkeeperSkin}
+            action={getShopkeeperAction()}
+          />
+        </div>
+
+        {/* Thân quầy hàng / Xe đẩy */}
+        <div className="relative z-20">
+          <StallIllustration
+            modelId={modelId}
+            shopName={shopName}
+            level={level}
+            hasUpgrades={upgrades}
+          />
+        </div>
+      </div>
+
+      {/* ================= HÀNG ĐỢI KHÁCH HÀNG THỰC TẾ TRÊN VỈA HÈ ================= */}
+      <div className="absolute bottom-1 left-2 sm:left-4 md:left-6 z-30 pointer-events-auto max-w-[50%] sm:max-w-[55%] md:max-w-[42%] overflow-x-auto overflow-y-visible py-1 no-scrollbar">
+        <SceneCustomerQueue
+          orders={orders}
+          onServe={onServeOrder}
+          onOpenCooking={onOpenCooking}
+          onCallCustomer={onCallCustomer}
         />
       </div>
 

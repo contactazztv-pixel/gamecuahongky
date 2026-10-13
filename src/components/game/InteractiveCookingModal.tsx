@@ -72,11 +72,18 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
 
   // Xử lý thực hiện bước hiện tại
   const handlePerformStep = () => {
-    soundManager.playClick();
     setIsAnimating(true);
 
     if (activeStep.visualEffect === 'boil' || activeStep.visualEffect === 'fry') {
       soundManager.playCookingSizzle();
+    } else if (activeStep.visualEffect === 'pour') {
+      soundManager.playPourLiquid();
+    } else if (activeStep.visualEffect === 'stir') {
+      soundManager.playShaker();
+    } else if (activeStep.visualEffect === 'pack' || activeStep.visualEffect === 'garnish') {
+      soundManager.playClick();
+    } else {
+      soundManager.playChop();
     }
 
     setTimeout(() => {
@@ -89,7 +96,7 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
         onFinishCooking(order.id);
         onClose();
       }
-    }, 450);
+    }, 550);
   };
 
   // Bỏ qua nhanh toàn bộ bước và hoàn thành ngay
@@ -97,6 +104,108 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
     soundManager.playCookComplete();
     onFinishCooking(order.id);
     onClose();
+  };
+
+  // Hiển thị visual tương tác theo từng loại động tác nấu ăn
+  const renderVisualStage = () => {
+    const effect = activeStep.visualEffect;
+
+    if (effect === 'pour') {
+      return (
+        <div className="relative flex items-center justify-center gap-3 md:gap-4 my-2">
+          {/* Chai / bình / túi nguyên liệu rót */}
+          <div className={`transition-all duration-300 ${isAnimating ? '-rotate-45 -translate-y-2' : ''}`}>
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-[#F7F2E7] border-3 border-amber-300 shadow-md flex items-center justify-center">
+              {activeStep.ingredientId ? (
+                <IngredientIcon ingredientId={activeStep.ingredientId} size="lg" />
+              ) : (
+                <Flame className="w-8 h-8 text-orange-500" />
+              )}
+            </div>
+          </div>
+
+          {/* Dòng nước rót lấp lánh khi đang thao tác */}
+          {isAnimating ? (
+            <div className="flex flex-col items-center gap-0.5 animate-pulse">
+              <div className="w-2 h-8 bg-gradient-to-b from-amber-500 to-amber-700 rounded-full"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-800 animate-ping"></div>
+            </div>
+          ) : (
+            <span className="text-xl text-amber-500 font-black animate-pulse">➔</span>
+          )}
+
+          {/* Cốc hoặc bát đón nhận */}
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-3xl bg-[#F7F2E7] border-3 border-amber-300 shadow-md flex items-center justify-center">
+            <DishIllustration itemId={primaryItem.menuItemId} size="md" />
+          </div>
+        </div>
+      );
+    }
+
+    if (effect === 'stir') {
+      return (
+        <div className="relative flex items-center justify-center my-2">
+          <div className={`relative transition-transform ${isAnimating ? 'animate-spin' : 'animate-bounce-gentle'}`}>
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-[#F7F2E7] border-3 border-amber-400 shadow-md flex items-center justify-center">
+              {activeStep.ingredientId ? (
+                <IngredientIcon ingredientId={activeStep.ingredientId} size="lg" />
+              ) : (
+                <DishIllustration itemId={primaryItem.menuItemId} size="lg" />
+              )}
+            </div>
+            {isAnimating && (
+              <div className="absolute -inset-1.5 rounded-3xl border-3 border-dashed border-amber-500 animate-spin"></div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (effect === 'boil' || effect === 'fry') {
+      return (
+        <div className="relative flex flex-col items-center justify-center my-2">
+          <div className={`relative ${isAnimating ? 'animate-bounce' : ''}`}>
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-[#F7F2E7] border-3 border-orange-400 shadow-md flex items-center justify-center">
+              {activeStep.ingredientId ? (
+                <IngredientIcon ingredientId={activeStep.ingredientId} size="lg" />
+              ) : (
+                <DishIllustration itemId={primaryItem.menuItemId} size="lg" />
+              )}
+            </div>
+            {/* Ngọn lửa xèo xèo ấm cúng */}
+            <div className="flex justify-center gap-1 -mt-2">
+              <span className="text-xl animate-bounce">🔥</span>
+              <span className="text-2xl animate-pulse">🔥</span>
+              <span className="text-xl animate-bounce" style={{ animationDelay: '0.15s' }}>🔥</span>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Garnish / Pack / Default
+    return (
+      <div className="relative flex items-center justify-center my-2">
+        <div
+          className={`w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-[#F7F2E7] border-3 border-amber-400 shadow-md flex items-center justify-center transition-transform ${
+            isAnimating ? 'scale-110 rotate-3' : 'animate-bounce-gentle'
+          }`}
+        >
+          {currentStepIdx === totalSteps - 1 ? (
+            <DishIllustration itemId={primaryItem.menuItemId} size="lg" />
+          ) : activeStep.ingredientId ? (
+            <IngredientIcon ingredientId={activeStep.ingredientId} size="lg" />
+          ) : (
+            <Flame className="w-10 h-10 text-orange-500" />
+          )}
+        </div>
+        {isAnimating && (
+          <span className="absolute -top-3 -right-3 text-2xl animate-ping">
+            ✨
+          </span>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -198,26 +307,8 @@ export const InteractiveCookingModal: React.FC<InteractiveCookingModalProps> = (
               </div>
             )}
 
-            {/* Icon minh họa nguyên liệu / thao tác của bước hiện tại */}
-            <div className="relative mb-2">
-              <div
-                className={`w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-white border-3 border-amber-400 shadow-md flex items-center justify-center transition-transform ${
-                  isAnimating ? 'animate-bounce' : 'animate-bounce-gentle'
-                }`}
-              >
-                {activeStep.ingredientId ? (
-                  <IngredientIcon ingredientId={activeStep.ingredientId} size="lg" />
-                ) : (
-                  <Flame className="w-10 h-10 text-orange-500" />
-                )}
-              </div>
-
-              {isAnimating && (
-                <span className="absolute -top-2 -right-2 text-2xl animate-spin">
-                  ✨
-                </span>
-              )}
-            </div>
+            {/* Khung visual minh họa động tác chế biến sinh động */}
+            {renderVisualStage()}
 
             {/* Hướng dẫn thao tác bước */}
             <p className="text-sm md:text-base font-black text-amber-950 mt-1 max-w-sm">

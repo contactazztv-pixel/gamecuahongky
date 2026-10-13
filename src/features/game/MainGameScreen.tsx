@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useGameStore } from '@/stores/gameStore';
+import { useSettingsStore } from '@/stores/settingsStore';
 import { TopStatusBar } from '@/components/layout/TopStatusBar';
 import { BottomDock } from '@/components/layout/BottomDock';
 import { SchoolGateScene } from '@/components/game/SchoolGateScene';
@@ -66,6 +67,8 @@ export const MainGameScreen: React.FC = () => {
     setTimeSpeed,
     setSettingsOpen,
   } = useGameStore();
+
+  const { shopkeeperSkin } = useSettingsStore();
 
   const [floatingItems, setFloatingItems] = useState<FloatingItem[]>([]);
   const [cookingOrder, setCookingOrder] = useState<ActiveOrder | null>(null);
@@ -249,6 +252,11 @@ export const MainGameScreen: React.FC = () => {
             upgrades={shop.upgrades}
             timePeriod={calendar.timePeriod}
             weather={calendar.weather}
+            shopkeeperSkin={shopkeeperSkin}
+            orders={activeOrders}
+            onServeOrder={handleServeOrder}
+            onOpenCooking={handleOpenInteractiveCooking}
+            onCallCustomer={handleCallCustomer}
           />
         </section>
 

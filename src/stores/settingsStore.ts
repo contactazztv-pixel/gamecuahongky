@@ -2,7 +2,11 @@ import { create } from 'zustand';
 import { GameSettings } from '@/game/types';
 import { soundManager } from '@/services/audio/soundEffects';
 
+import { ShopkeeperSkin } from '@/components/game/ShopkeeperSprite';
+
 interface SettingsStore extends GameSettings {
+  shopkeeperSkin: ShopkeeperSkin;
+  setShopkeeperSkin: (skin: ShopkeeperSkin) => void;
   setSoundEnabled: (enabled: boolean) => void;
   setSfxVolume: (vol: number) => void;
   setBgmVolume: (vol: number) => void;
@@ -20,13 +24,32 @@ const checkSystemReducedMotion = (): boolean => {
   }
 };
 
+const getInitialSkin = (): ShopkeeperSkin => {
+  if (typeof window === 'undefined') return 'bao_an';
+  try {
+    const saved = localStorage.getItem('tiem_nho_shopkeeper_skin');
+    if (saved === 'bao_an' || saved === 'quang_minh' || saved === 'minh_thu') {
+      return saved;
+    }
+  } catch {}
+  return 'bao_an';
+};
+
 export const useSettingsStore = create<SettingsStore>((set) => ({
+  shopkeeperSkin: getInitialSkin(),
   soundEnabled: true,
   sfxVolume: 0.7,
   bgmVolume: 0.5,
   reducedMotion: checkSystemReducedMotion(),
   autoSave: true,
   highContrast: false,
+
+  setShopkeeperSkin: (skin) => {
+    try {
+      localStorage.setItem('tiem_nho_shopkeeper_skin', skin);
+    } catch {}
+    set({ shopkeeperSkin: skin });
+  },
 
   setSoundEnabled: (enabled) => {
     soundManager.setMuted(!enabled);

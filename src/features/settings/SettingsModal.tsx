@@ -21,11 +21,13 @@ import {
   MessageSquareHeart,
   Smartphone,
   Star,
+  User,
 } from 'lucide-react';
 import { PlayerFeedbackModal } from '@/components/game/PlayerFeedbackModal';
 import { PwaInstallModal } from '@/components/game/PwaInstallModal';
 import { CustomerReviewsModal } from '@/components/game/CustomerReviewsModal';
-import { soundManager } from '@/services/audio/soundEffects';
+import { soundManager, BGM_TRACKS, BgmTrackId } from '@/services/audio/soundEffects';
+import { SHOPKEEPER_SKINS, ShopkeeperSkin, ShopkeeperSprite } from '@/components/game/ShopkeeperSprite';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -37,9 +39,11 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     soundEnabled,
     sfxVolume,
     reducedMotion,
+    shopkeeperSkin,
     setSoundEnabled,
     setSfxVolume,
     setReducedMotion,
+    setShopkeeperSkin,
   } = useSettingsStore();
 
   const {
@@ -59,6 +63,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const showFeedback = (text: string, isError = false) => {
     setFeedbackMessage({ text, isError });
     setTimeout(() => setFeedbackMessage(null), 3000);
+  };
+
+  const [currentTrackId, setCurrentTrackId] = useState<BgmTrackId>(
+    soundManager.getSettings().currentTrackId
+  );
+
+  const handleSelectTrack = (trackId: BgmTrackId) => {
+    soundManager.setTrack(trackId);
+    setCurrentTrackId(trackId);
+    soundManager.playClick();
+  };
+
+  const handleSelectSkin = (skin: ShopkeeperSkin) => {
+    setShopkeeperSkin(skin);
+    soundManager.playClick();
+    showFeedback('Đã đổi ngoại hình người bán hàng!');
   };
 
   const handleExport = () => {
@@ -196,28 +216,105 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
               </div>
 
               {soundManager.getSettings().isBgmEnabled && (
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-amber-800">
-                    <span>Âm lượng nhạc nền:</span>
-                    <span className="font-bold">
-                      {Math.round(soundManager.getSettings().bgmVolume * 100)}%
+                <>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs text-amber-800">
+                      <span>Âm lượng nhạc nền:</span>
+                      <span className="font-bold">
+                        {Math.round(soundManager.getSettings().bgmVolume * 100)}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={soundManager.getSettings().bgmVolume}
+                      onChange={(e) => {
+                        const v = parseFloat(e.target.value);
+                        soundManager.setBgmVolume(v);
+                        setSoundEnabled(soundEnabled);
+                      }}
+                      className="w-full accent-amber-600 cursor-pointer"
+                    />
+                  </div>
+
+                  {/* Chọn bản nhạc nền đang phát */}
+                  <div className="pt-1.5 space-y-1.5">
+                    <span className="text-[11px] font-bold text-amber-800 block">
+                      Bản nhạc nền đang phát:
+                    </span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {BGM_TRACKS.map((t) => (
+                        <button
+                          key={t.id}
+                          onClick={() => handleSelectTrack(t.id)}
+                          className={`p-2 rounded-xl text-left border text-xs transition-all flex flex-col justify-between ${
+                            currentTrackId === t.id
+                              ? 'bg-amber-600 text-white border-amber-700 shadow-sm ring-2 ring-amber-300'
+                              : 'bg-white hover:bg-amber-50 text-amber-950 border-amber-200'
+                          }`}
+                        >
+                          <span className="font-black truncate">{t.name}</span>
+                          <span
+                            className={`text-[10px] line-clamp-1 mt-0.5 ${
+                              currentTrackId === t.id ? 'text-amber-100' : 'text-amber-700/80'
+                            }`}
+                          >
+                            {t.desc}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* NHÂN VẬT NGƯỜI BÁN HÀNG */}
+          <div className="bg-white/90 border border-amber-200 rounded-2xl p-3.5 space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-extrabold text-sm text-amber-950 flex items-center gap-1.5">
+                <User className="w-4 h-4 text-amber-700" /> Nhân Vật Người Bán Hàng
+              </h4>
+              <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
+                3 Ngoại Hình
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {SHOPKEEPER_SKINS.map((s) => {
+                const isSelected = shopkeeperSkin === s.id;
+                return (
+                  <div
+                    key={s.id}
+                    onClick={() => handleSelectSkin(s.id)}
+                    className={`cursor-pointer rounded-2xl border-2 p-2.5 flex flex-col items-center text-center transition-all ${
+                      isSelected
+                        ? 'bg-amber-50 border-amber-500 ring-2 ring-amber-300 shadow-md scale-[1.02]'
+                        : 'bg-white border-amber-200 hover:border-amber-400 hover:bg-amber-50/50'
+                    }`}
+                  >
+                    {/* Avatar thu nhỏ của nhân vật */}
+                    <div className="w-16 h-16 rounded-2xl bg-[#F7F2E7] border border-[#EBE4D5] flex items-center justify-center overflow-hidden mb-1.5 shadow-inner">
+                      <div className="scale-75 transform">
+                        <ShopkeeperSprite skin={s.id} action={isSelected ? 'happy' : 'idle'} />
+                      </div>
+                    </div>
+
+                    <span className="font-black text-xs text-amber-950 leading-tight">
+                      {s.name}
+                    </span>
+                    <span className="text-[10px] font-semibold text-amber-700/80 mt-0.5">
+                      {s.role}
+                    </span>
+                    <span className="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded-md mt-1">
+                      {s.badge}
                     </span>
                   </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.05"
-                    value={soundManager.getSettings().bgmVolume}
-                    onChange={(e) => {
-                      const v = parseFloat(e.target.value);
-                      soundManager.setBgmVolume(v);
-                      setSoundEnabled(soundEnabled);
-                    }}
-                    className="w-full accent-amber-600 cursor-pointer"
-                  />
-                </div>
-              )}
+                );
+              })}
             </div>
           </div>
 
