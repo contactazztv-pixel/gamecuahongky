@@ -92,9 +92,7 @@ export const MenuPanel: React.FC<MenuPanelProps> = ({
                 {/* Header món & nút Bật/Tắt */}
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-12 h-12 flex-shrink-0 bg-amber-50 rounded-2xl p-1 border border-amber-200/80 shadow-inner flex items-center justify-center">
-                      <DishIllustration itemId={item.id} size="md" />
-                    </div>
+                    <DishIllustration itemId={item.id} size="md" className="shrink-0" />
                     <div>
                       <h4 className="font-black text-sm md:text-base text-amber-950 leading-tight">{item.name}</h4>
                       <span className="text-[10px] text-amber-700 font-semibold">{item.category}</span>

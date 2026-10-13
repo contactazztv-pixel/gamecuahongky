@@ -324,10 +324,8 @@ export const RestockShopModal: React.FC<RestockShopModalProps> = ({
                         : 'border-amber-900/15'
                     }`}
                   >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 p-1 flex items-center justify-center flex-shrink-0">
-                        <IngredientIcon ingredientId={ing.id} size="sm" />
-                      </div>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <IngredientIcon ingredientId={ing.id} size="md" className="shrink-0" />
                       <div className="min-w-0">
                         <h4 className="font-black text-xs text-amber-950 truncate leading-tight">
                           {ing.name}

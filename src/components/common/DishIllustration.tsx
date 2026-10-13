@@ -343,7 +343,7 @@ export const DishIllustration: React.FC<DishIllustrationProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center justify-center p-1 bg-white/90 rounded-2xl border-2 border-amber-900/15 shadow-xs flex-shrink-0 overflow-hidden ${dim} ${className}`}
+      className={`inline-flex items-center justify-center bg-[#F7F2E7] border border-[#EBE4D5] rounded-2xl shadow-xs flex-shrink-0 overflow-hidden ${dim} ${className}`}
       title={itemId}
     >
       {realImgUrl && !imgError ? (
@@ -351,11 +351,13 @@ export const DishIllustration: React.FC<DishIllustrationProps> = ({
           src={realImgUrl}
           alt={itemId}
           onError={() => setImgError(true)}
-          className="w-full h-full object-cover rounded-xl select-none transition-transform hover:scale-105"
+          className="w-full h-full object-cover rounded-[inherit] select-none transition-transform hover:scale-105"
           loading="lazy"
         />
       ) : (
-        renderSvgContent()
+        <div className="w-full h-full p-1.5 flex items-center justify-center">
+          {renderSvgContent()}
+        </div>
       )}
     </div>
   );
