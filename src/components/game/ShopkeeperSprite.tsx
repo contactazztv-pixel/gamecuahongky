@@ -40,7 +40,7 @@ export const SHOPKEEPER_SKINS: {
   },
 ];
 
-export const ShopkeeperSprite: React.FC<ShopkeeperSpriteProps> = ({
+export const ShopkeeperSprite: React.FC<ShopkeeperSpriteProps> = React.memo(({
   skin = 'bao_an',
   action = 'idle',
   onClick,
@@ -310,4 +310,4 @@ export const ShopkeeperSprite: React.FC<ShopkeeperSpriteProps> = ({
       </div>
     </div>
   );
-};
+});

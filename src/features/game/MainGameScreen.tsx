@@ -146,7 +146,7 @@ export const MainGameScreen: React.FC = () => {
   }, [isPaused, isSettingsOpen, setActiveDockTab, setPaused, setSettingsOpen]);
 
   // Hành động gọi thêm khách hàng thủ công bằng nút Rao vỉa hè
-  const handleCallCustomer = () => {
+  const handleCallCustomer = useCallback(() => {
     const newOrder = generateNewOrder(
       shop.businessModelId,
       menuItems,
@@ -161,41 +161,41 @@ export const MainGameScreen: React.FC = () => {
         activeOrders: [...state.activeOrders, newOrder],
       }));
     }
-  };
+  }, [shop, menuItems, calendar.timePeriod, activeOrders, inventory]);
 
   // Hành động nấu ăn kèm hiệu ứng âm thanh xèo xèo
-  const handleStartCooking = (orderId: string) => {
+  const handleStartCooking = useCallback((orderId: string) => {
     soundManager.playCookingSizzle();
     startCooking(orderId);
-  };
+  }, [startCooking]);
 
   // Mở modal nhập hàng từ đơn hoặc từ kho
-  const handleOpenRestockModal = (ingredientId?: string, neededAmount: number = 1) => {
+  const handleOpenRestockModal = useCallback((ingredientId?: string, neededAmount: number = 1) => {
     setRestockInitialIngId(ingredientId || null);
     setRestockInitialNeededAmount(neededAmount);
     setIsRestockModalOpen(true);
-  };
+  }, []);
 
   // Mở modal nấu ăn tương tác
-  const handleOpenInteractiveCooking = (order: ActiveOrder) => {
+  const handleOpenInteractiveCooking = useCallback((order: ActiveOrder) => {
     setCookingOrder(order);
-  };
+  }, []);
 
   // Hoàn tất nấu ăn tương tác
-  const handleFinishInteractiveCooking = (orderId: string) => {
+  const handleFinishInteractiveCooking = useCallback((orderId: string) => {
     finishInteractiveCooking(orderId);
     setCookingOrder(null);
     soundManager.playSuccessFanfare();
     addFloatingItem('sparkle', 'Món ăn đã sẵn sàng! 🍲');
-  };
+  }, [finishInteractiveCooking, addFloatingItem]);
 
   // Mua hàng nhiều món theo lô từ chợ
-  const handleBatchPurchase = (cart: { ingredientId: string; quantity: number }[]) => {
+  const handleBatchPurchase = useCallback((cart: { ingredientId: string; quantity: number }[]) => {
     return buyIngredientsBatch(cart);
-  };
+  }, [buyIngredientsBatch]);
 
   // Hành động giao món ăn kèm hiệu ứng bay tiền xu leng keng
-  const handleServeOrder = (orderId: string) => {
+  const handleServeOrder = useCallback((orderId: string) => {
     const order = activeOrders.find((o) => o.id === orderId);
     if (order) {
       soundManager.playCoin();
@@ -206,14 +206,34 @@ export const MainGameScreen: React.FC = () => {
       }
     }
     serveOrder(orderId);
-  };
+  }, [activeOrders, addFloatingItem, serveOrder]);
 
   // Hành động nhận thưởng nhiệm vụ kèm hiệu ứng pháo hoa Fanfare
-  const handleClaimQuestReward = (questId: string) => {
+  const handleClaimQuestReward = useCallback((questId: string) => {
     soundManager.playSuccessFanfare();
     addFloatingItem('sparkle', 'Nhiệm vụ hoàn thành! ⭐');
     claimQuestReward(questId);
-  };
+  }, [claimQuestReward, addFloatingItem]);
+
+  const handleTogglePause = useCallback(() => {
+    setPaused(!isPaused);
+  }, [isPaused, setPaused]);
+
+  const handleOpenSettings = useCallback(() => {
+    setSettingsOpen(true);
+  }, [setSettingsOpen]);
+
+  const handleOpenReviews = useCallback(() => {
+    setIsReviewsModalOpen(true);
+  }, []);
+
+  const handleOpenFeedback = useCallback(() => {
+    setIsFeedbackModalOpen(true);
+  }, []);
+
+  const handleOpenInventoryTab = useCallback(() => {
+    setActiveDockTab('inventory');
+  }, [setActiveDockTab]);
 
   const unclaimedQuestsCount = quests.filter((q) => q.completed && !q.claimed).length;
 
@@ -232,13 +252,13 @@ export const MainGameScreen: React.FC = () => {
         calendar={calendar}
         isPaused={isPaused}
         timeSpeed={calendar.timeSpeed}
-        onTogglePause={() => setPaused(!isPaused)}
+        onTogglePause={handleTogglePause}
         onChangeSpeed={setTimeSpeed}
         onSaveGame={manualSaveGame}
-        onOpenSettings={() => setSettingsOpen(true)}
+        onOpenSettings={handleOpenSettings}
         onAdvancePeriod={advanceToNextPeriod}
-        onOpenReviews={() => setIsReviewsModalOpen(true)}
-        onOpenFeedback={() => setIsFeedbackModalOpen(true)}
+        onOpenReviews={handleOpenReviews}
+        onOpenFeedback={handleOpenFeedback}
       />
 
       {/* Khu vực nội dung game chính */}
@@ -270,7 +290,7 @@ export const MainGameScreen: React.FC = () => {
               cookingSlotsCount={shop.cookingSlotsCount}
               onStartCooking={handleStartCooking}
               onServe={handleServeOrder}
-              onOpenInventory={() => setActiveDockTab('inventory')}
+              onOpenInventory={handleOpenInventoryTab}
               onCallCustomer={handleCallCustomer}
               onQuickRestockIngredient={handleOpenRestockModal}
               onOpenInteractiveCooking={handleOpenInteractiveCooking}

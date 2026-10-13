@@ -18,7 +18,7 @@ interface SchoolGateSceneProps {
   onCallCustomer?: () => void;
 }
 
-export const SchoolGateScene: React.FC<SchoolGateSceneProps> = ({
+export const SchoolGateScene: React.FC<SchoolGateSceneProps> = React.memo(({
   modelId,
   shopName,
   level,
@@ -47,22 +47,22 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = ({
     ? '/assets/backgrounds/school_gate_sunset.jpg'
     : '/assets/backgrounds/school_gate_morning.jpg';
 
-  // Lớp phủ ánh sáng thời gian cho nền
+  // Lớp phủ ánh sáng thời gian cho nền (Dùng alpha thuần tối ưu GPU di động 60FPS)
   const getLightingOverlay = () => {
     switch (timePeriod) {
       case 'morning_prep':
-        return 'bg-amber-500/10 mix-blend-color-burn';
+        return 'bg-amber-400/10';
       case 'school_rush':
       case 'recess_rush':
         return 'bg-transparent';
       case 'noon_break':
-        return 'bg-yellow-400/10';
+        return 'bg-yellow-300/10';
       case 'afternoon_bell':
-        return 'bg-orange-600/15 mix-blend-multiply';
+        return 'bg-orange-500/15';
       case 'evening_chill':
-        return 'bg-purple-900/25 mix-blend-multiply';
+        return 'bg-purple-900/20';
       case 'day_end':
-        return 'bg-slate-950/65 mix-blend-multiply';
+        return 'bg-slate-950/60';
       default:
         return 'bg-transparent';
     }
@@ -311,4 +311,4 @@ export const SchoolGateScene: React.FC<SchoolGateSceneProps> = ({
       )}
     </div>
   );
-};
+});

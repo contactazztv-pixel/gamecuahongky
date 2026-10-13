@@ -30,7 +30,7 @@ interface OrderCardProps {
   onOpenInteractiveCooking?: (order: ActiveOrder) => void;
 }
 
-export const OrderCard: React.FC<OrderCardProps> = ({
+export const OrderCard: React.FC<OrderCardProps> = React.memo(({
   order,
   menuItems,
   inventory,
@@ -74,7 +74,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
   return (
     <div
-      className={`relative rounded-2xl p-3.5 shadow-md flex flex-col justify-between gap-2.5 transition-all ${
+      className={`relative rounded-2xl p-3.5 shadow-md flex flex-col justify-between gap-2.5 transition-all virtual-item ${
         order.status === 'ready_to_serve'
           ? 'bg-emerald-50/95 border-2 border-emerald-500 shadow-lg ring-2 ring-emerald-300 animate-pulse-subtle'
           : order.status === 'preparing'
@@ -299,4 +299,4 @@ export const OrderCard: React.FC<OrderCardProps> = ({
       </div>
     </div>
   );
-};
+});

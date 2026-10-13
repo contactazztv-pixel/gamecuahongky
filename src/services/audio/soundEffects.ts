@@ -57,6 +57,27 @@ class SoundManager {
 
   constructor() {
     this.loadSettings();
+    this.initAudioOnFirstInteraction();
+  }
+
+  /**
+   * Tự động unlock AudioContext trên điện thoại di động (iOS Safari / Android Chrome)
+   * ngay cú chạm / vuốt đầu tiên, loại bỏ 100% độ trễ SFX và lỗi chặn âm thanh autoplay
+   */
+  public initAudioOnFirstInteraction(): void {
+    if (typeof window === 'undefined') return;
+    const unlock = () => {
+      const ctx = this.getContext();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
+      }
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('touchstart', unlock);
+      window.removeEventListener('keydown', unlock);
+    };
+    window.addEventListener('pointerdown', unlock, { passive: true });
+    window.addEventListener('touchstart', unlock, { passive: true });
+    window.addEventListener('keydown', unlock, { passive: true });
   }
 
   private loadSettings(): void {

@@ -31,7 +31,7 @@ interface TopStatusBarProps {
   onOpenFeedback?: () => void;
 }
 
-export const TopStatusBar: React.FC<TopStatusBarProps> = ({
+export const TopStatusBar: React.FC<TopStatusBarProps> = React.memo(({
   player: _player,
   shop,
   calendar,
@@ -51,7 +51,7 @@ export const TopStatusBar: React.FC<TopStatusBarProps> = ({
   const timeString = formatInGameTime(calendar.inGameMinute);
 
   return (
-    <header className="sticky top-0 z-40 bg-amber-100/95 border-b-2 border-amber-900/20 shadow-sm backdrop-blur-md px-3 md:px-5 py-2.5">
+    <header className="sticky top-0 z-40 bg-amber-100/98 border-b-2 border-amber-900/20 shadow-sm px-3 md:px-5 py-2.5">
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
         {/* ================= BÊN TRÁI: NGÀY, ĐỒNG HỒ & THỜI GIAN ================= */}
         <div className="flex items-center gap-2 flex-wrap">
@@ -209,4 +209,4 @@ export const TopStatusBar: React.FC<TopStatusBarProps> = ({
       </div>
     </header>
   );
-};
+});

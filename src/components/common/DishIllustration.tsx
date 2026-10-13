@@ -7,7 +7,7 @@ interface DishIllustrationProps {
   className?: string;
 }
 
-export const DishIllustration: React.FC<DishIllustrationProps> = ({
+export const DishIllustration: React.FC<DishIllustrationProps> = React.memo(({
   itemId,
   size = 'md',
   className = '',
@@ -361,4 +361,4 @@ export const DishIllustration: React.FC<DishIllustrationProps> = ({
       )}
     </div>
   );
-};
+});

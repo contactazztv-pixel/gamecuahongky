@@ -17,7 +17,7 @@ interface BottomDockProps {
   unclaimedQuestsCount: number;
 }
 
-export const BottomDock: React.FC<BottomDockProps> = ({
+export const BottomDock: React.FC<BottomDockProps> = React.memo(({
   activeTab,
   onSelectTab,
   unclaimedQuestsCount,
@@ -34,7 +34,7 @@ export const BottomDock: React.FC<BottomDockProps> = ({
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-40 bg-amber-50/95 border-t-2 border-amber-900/20 shadow-2xl backdrop-blur-md px-1.5 md:px-3 pt-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))]">
+    <nav className="fixed bottom-0 inset-x-0 z-40 bg-amber-50/98 border-t-2 border-amber-900/20 shadow-2xl px-1.5 md:px-3 pt-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))]">
       <div className="max-w-4xl mx-auto flex items-center justify-between sm:justify-around gap-0.5 sm:gap-1 overflow-x-auto no-scrollbar py-0.5">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -66,4 +66,4 @@ export const BottomDock: React.FC<BottomDockProps> = ({
       </div>
     </nav>
   );
-};
+});

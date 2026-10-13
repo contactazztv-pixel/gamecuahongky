@@ -9,7 +9,7 @@ interface CharacterAvatarProps {
   fallbackEmoji?: string;
 }
 
-export const CharacterAvatar: React.FC<CharacterAvatarProps> = ({
+export const CharacterAvatar: React.FC<CharacterAvatarProps> = React.memo(({
   characterId,
   size = 'md',
   mood = 'neutral',
@@ -510,4 +510,4 @@ export const CharacterAvatar: React.FC<CharacterAvatarProps> = ({
       )}
     </div>
   );
-};
+});

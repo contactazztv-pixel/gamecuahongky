@@ -78,7 +78,7 @@ export const INGREDIENT_IMAGE_MAP: Record<string, string> = {
   banh_mi_vo: '/assets/foods/dish_banh_mi.jpg',
 };
 
-export const IngredientIcon: React.FC<IngredientIconProps> = ({
+export const IngredientIcon: React.FC<IngredientIconProps> = React.memo(({
   ingredientId,
   size = 'md',
   className = '',
@@ -213,4 +213,4 @@ export const IngredientIcon: React.FC<IngredientIconProps> = ({
       {renderFallbackSvg()}
     </div>
   );
-};
+});

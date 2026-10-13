@@ -28,7 +28,7 @@ interface CustomerQueueProps {
   onOpenInteractiveCooking?: (order: ActiveOrder) => void;
 }
 
-export const CustomerQueue: React.FC<CustomerQueueProps> = ({
+export const CustomerQueue: React.FC<CustomerQueueProps> = React.memo(({
   orders,
   menuItems,
   inventory,
@@ -184,4 +184,4 @@ export const CustomerQueue: React.FC<CustomerQueueProps> = ({
       </div>
     </div>
   );
-};
+});

@@ -49,7 +49,7 @@ function getStockDisplayText(ing: IngredientItem, qty: number): string {
   return `còn ${qty} ${unitName}`;
 }
 
-export const InventoryPanel: React.FC<InventoryPanelProps> = ({
+export const InventoryPanel: React.FC<InventoryPanelProps> = React.memo(({
   inventory,
   inventoryLogs,
   cash,
@@ -364,7 +364,7 @@ export const InventoryPanel: React.FC<InventoryPanelProps> = ({
                 return (
                   <div
                     key={ing.id}
-                    className="py-3 sm:py-3.5 first:pt-1 last:pb-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group transition-colors"
+                    className="py-3 sm:py-3.5 first:pt-1 last:pb-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group transition-colors virtual-item"
                   >
                     {/* Cụm bên trái: Ảnh minh họa 2D trong ô vuông be nhạt + Tên in đậm + Tồn kho */}
                     <div className="flex items-center gap-3.5 min-w-0 flex-1">
@@ -479,7 +479,7 @@ export const InventoryPanel: React.FC<InventoryPanelProps> = ({
                 return (
                   <div
                     key={ing.id}
-                    className={`bg-[#FAF7F2] border rounded-2xl p-3 flex flex-col justify-between shadow-xs transition-all ${
+                    className={`bg-[#FAF7F2] border rounded-2xl p-3 flex flex-col justify-between shadow-xs transition-all virtual-item ${
                       isOutOfStock
                         ? 'border-rose-300 bg-rose-50/40'
                         : isShortageForOrders
@@ -602,4 +602,4 @@ export const InventoryPanel: React.FC<InventoryPanelProps> = ({
       )}
     </div>
   );
-};
+});
